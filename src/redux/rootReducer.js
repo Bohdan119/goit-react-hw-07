@@ -11,5 +11,5 @@ const persistedContactReducer = persistReducer(persistConfig, contactsReducer);
 
 export const rootReducer = {
   contacts: persistedContactReducer,
-  filters: filtersReducer,
+  filter: filtersReducer,
 };
