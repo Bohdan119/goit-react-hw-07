@@ -49,27 +49,3 @@ export const selectError = (state) => state.contacts.error;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// export const selectFilteredContacts = createSelector(
-//   [selectItems, selectValue],
-//   (contacts, filter) => {
-//     return contact.filter((el)=>el.name.toLowerCase().includes(filter.toLowerCase()))
-//   }
-// )
-
-// export const selectFilteredContacts = (state) => {
-//   const items = selectItems(state)
-//   const filterContacts = selectValue(state)
-//   return items?.filter((el) => el.name.toLowerCase().includes(filterContacts.toLowerCase())); 
-// }
-
