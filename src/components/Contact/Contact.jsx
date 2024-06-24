@@ -2,28 +2,40 @@ import { useEffect } from "react";
 import css from "../Contact/Contact.module.css";
 
 import { useDispatch, useSelector } from "react-redux"
-import { fetchItems } from "../../redux/contactOps";
+import { fetchItems, deleteItem } from "../../redux/contactOps";
 import { selectItems } from "../../redux/contactsSlice";
 
+
 const Contact = () => {
-  const item = useSelector(selectItems)
+  const items = useSelector(selectItems)
+  console.dir(items);
+  
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchItems());
-  },[dispatch])
+    dispatch(
+      fetchItems(fetchItems())
+    );
+  }, [dispatch])
+  
+  const handleDelete = (id) => {
+    dispatch(deleteItem(id));
+  };
+  
 
   return (
-    <li className={css["contact-item"]}>
-        <div className={css["contact-box"]}>
+    <div>
+      {items.map((item) => (
+        <li key={item.id} className={css["contact-item"]}>
           <span className={css["contact-name"]}>{item.name}</span>
-          <span className={css["contact-number"]}>tel. {item.number}</span>
-        </div>
-        <button className={css["button-delete"]}>
-          Delete
-        </button>
-    </li>
-  )
+          <span className={css["contact-number"]}>tel.{item.number}</span>
+          <button className={css["button-delete"]} onClick={()=>handleDelete(item.id)}>
+            Delete
+          </button>
+        </li>
+      ))}
+    </div>
+  );
 }
 
 export default Contact;

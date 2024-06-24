@@ -7,3 +7,8 @@ export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
     const {data} = await axios('contacts')
     return data
 })
+
+export const deleteItem = createAsyncThunk("items/deleteItems", async (id) => {
+  const { data } = await axios.delete(`contacts/${id}`)
+  return data
+})

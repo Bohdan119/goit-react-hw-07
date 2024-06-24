@@ -1,6 +1,5 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { fetchItems } from "./contactOps";
-import { selectValue } from "./filtersSlice";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchItems, deleteItem } from "./contactOps";
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -17,10 +16,24 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchItems.fulfilled, (state, { payload }) => {
         state.error = false;
-        state.items = payload.items;
+        // console.dir(payload);
+        state.items = payload;
         state.loading = false;
       })
       .addCase(fetchItems.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+    .addCase(deleteItem.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deleteItem.fulfilled, (state, { payload }) => {
+        state.error = false;
+        state.items = state.items.filter((el)=>el.id!==payload.id);
+        state.loading = false;
+      })
+      .addCase(deleteItem.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
@@ -28,15 +41,31 @@ const contactsSlice = createSlice({
 })
 
 export const contactsReducer = contactsSlice.reducer; 
+
 export const selectItems = (state) => state.contacts.items;
 export const selectLoading = (state) => state.contacts.loading;
 export const selectError = (state) => state.contacts.error;
-export const selectFilteredContacts = createSelector(
-  [selectItems, selectValue],
-  (contacts, filter) => {
-    return contacts.filter((el)=>el.name.toLowerCase().includes(filter.toLowerCase()))
-  }
-)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const selectFilteredContacts = createSelector(
+//   [selectItems, selectValue],
+//   (contacts, filter) => {
+//     return contact.filter((el)=>el.name.toLowerCase().includes(filter.toLowerCase()))
+//   }
+// )
 
 // export const selectFilteredContacts = (state) => {
 //   const items = selectItems(state)
