@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchItems, deleteItem } from "./contactOps";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { fetchItems, deleteItem, } from "./contactOps";
+import { selectValue } from "./filtersSlice";
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -23,20 +24,23 @@ const contactsSlice = createSlice({
       .addCase(fetchItems.rejected, (state) => {
         state.loading = false;
         state.error = true;
-      })
-    .addCase(deleteItem.pending, (state) => {
+      });
+    
+    builder
+      .addCase(deleteItem.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
       .addCase(deleteItem.fulfilled, (state, { payload }) => {
         state.error = false;
-        state.items = state.items.filter((el)=>el.id!==payload.id);
+        state.items = state.items.filter((el) => el.id !== payload.id);
         state.loading = false;
       })
       .addCase(deleteItem.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
+    
   }
 })
 
@@ -46,6 +50,10 @@ export const selectItems = (state) => state.contacts.items;
 export const selectLoading = (state) => state.contacts.loading;
 export const selectError = (state) => state.contacts.error;
 
-
+export const selectFilteredItems = createSelector(
+  [selectItems, selectValue],
+  (items, name) => {
+   return items?.filter(el=>el.name.toLowerCase().includes(name.toLowerCase()))
+  })
 
 

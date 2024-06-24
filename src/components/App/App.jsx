@@ -1,7 +1,6 @@
 import ContactList from "../ContactList/ContactList.jsx";
 // import ContactForm from "../ContactForm/ContactForm.jsx";
-// import SearchBox from "../SearchBox/SearchBox.jsx";
-// import PageCont from "../../PageCont";
+import SearchBox from "../SearchBox/SearchBox.jsx";
 import "./App.css";
 
 function App() {
@@ -10,9 +9,8 @@ function App() {
     <>
       <h1>Phonebook</h1>
       {/* <ContactForm/> */}
-      {/* <SearchBox /> */}
+      <SearchBox />
       <ContactList/>
-      {/* <PageCont/> */}
     </>
   );
 }
