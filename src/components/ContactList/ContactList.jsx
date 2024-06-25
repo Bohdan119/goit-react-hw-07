@@ -3,42 +3,46 @@ import css from "../ContactList/ContactList.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Contact from "../Contact/Contact";
-// import ContactForm from "../ContactForm/ContactForm";
 
+import { selectFilteredContacts } from "../../redux/contactsSlice";
 import {
   selectItems,
   selectLoading,
   selectError,
 } from "../../redux/contactsSlice";
-import {fetchItems, deleteItem} from '../../redux/contactOps'
+import { fetchContacts, deleteContact } from "../../redux/contactsOps";
+
 
 const ContactList = () => {
   const items = useSelector(selectItems);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
+  const filteredItems = useSelector(selectFilteredContacts);
 
 
 
-  useEffect(() => { 
-    dispatch(fetchItems());
+  useEffect(() => {
+    dispatch(fetchContacts());
   }, [dispatch]);
 
-    const handleDelete = (id) => {
-      dispatch(deleteItem(id));
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
   };
 
   return (
     <div>
-      {/* <ContactForm/> */}
       {error && <h2>Error: {error.message}</h2>}
-        <ul className={css["contact-list"]}>
-          <Contact handleDelete={handleDelete} items={items} />
       {loading && <h2>Loading...</h2>}
+      {items && (
+        <ul className={css["contact-list"]}>
+          {filteredItems.map((item) => (
+            <Contact handleDelete={handleDelete} item={item} key={item.id} />
+          ))}
         </ul>
-      
+      )}
     </div>
   );
-}
+};
 
 export default ContactList;
